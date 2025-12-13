@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: sufyanliaqat/my-backend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@mongodb-service:27017"
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-password
+        - name: PORT 
+          value: 3000
+        - name: NODE_ENV
+          value: production
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: jwt-secret
+        
