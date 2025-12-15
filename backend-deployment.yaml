@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: sufyanliaqat/my-backend:latest
+        image: sufyanliaqat/my-backend:v1.0.7
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         env:
@@ -63,5 +64,3 @@ spec:
               key: brevo_api_key
         - name: REDIS_URL
           value: "redis://redis-service:6379"
-        - name: REDIS_DISABLED
-          value: "true"
